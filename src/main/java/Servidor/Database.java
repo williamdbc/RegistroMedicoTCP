@@ -1,11 +1,12 @@
 package Servidor;
 
+import Servidor.algoritmoApriori.AlgoritmoApriori;
 import java.util.ArrayList;
 
 public class Database {
     private ArrayList<String> diagnosticos = new ArrayList<String>();
     private ArrayList<ArrayList<String>> sintomas = new ArrayList<>();
-
+    
     public Database() {
     }
     
@@ -17,9 +18,7 @@ public class Database {
     }
     
     public String diagnosticoAutomatico(){
-        //String teste = AlgoritmoApriori.recomendacaoDiagnostico();
-        //fazer o algortimo apriori e retornar o diagnostico fornecido
-        return "Diagnositco";
+        return new AlgoritmoApriori().realizarDiagnostico(sintomas, diagnosticos);
     }
     
     public String retornarCasos(){
