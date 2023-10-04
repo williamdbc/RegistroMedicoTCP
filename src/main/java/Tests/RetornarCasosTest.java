@@ -7,6 +7,7 @@ package Tests;
 
 import Servidor.Database;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -32,6 +33,8 @@ public class RetornarCasosTest {
         database.armazenarConsulta(sintomasPaciente2, diagnostico2);
         
         System.out.println(database.retornarCasos());
+        JOptionPane.showMessageDialog(null, database.retornarCasos(), "Resposta do servidor", JOptionPane.INFORMATION_MESSAGE);
+        
     }
     
 }
