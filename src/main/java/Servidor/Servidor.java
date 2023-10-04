@@ -44,7 +44,7 @@ public class Servidor extends Thread{
         
         switch(tipoRequisicao){
             case ENVIAR_CONSULTA:
-                resposta = database.armazenarConsulta(solicitacaoRecebida.getSintomas());
+                resposta = database.armazenarConsulta(solicitacaoRecebida.getSintomas(), solicitacaoRecebida.getDiagnostico());
                 break;
             case SOLICITAR_CASOS:
                 resposta = database.retornarCasos();
