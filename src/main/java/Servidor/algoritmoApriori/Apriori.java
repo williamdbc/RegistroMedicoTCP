@@ -160,12 +160,6 @@ public class Apriori extends Observable{
         }
     }
 
-	
-    /**
-     * if m is the size of the current itemsets,
-     * generate all possible itemsets of size n+1 from pairs of current itemsets
-     * replaces the itemsets of itemsets by the new ones
-     */
     private void createNewItemsetsFromPreviousOnes()
     {
     	// by construction, all existing itemsets have the same size
@@ -229,9 +223,7 @@ public class Apriori extends Observable{
     	log("Created "+itemsets.size()+" unique itemsets of size "+(currentSizeOfItemsets+1));
 
     }
-
-
-
+   
     /** put "true" in trans[i] if the integer i is in line */
     private void line2booleanArray(ArrayList<String> line, boolean[] trans) {
         Arrays.fill(trans, false);

@@ -1,6 +1,7 @@
 package Servidor.algoritmoApriori;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -11,8 +12,22 @@ public class AlgoritmoApriori {
     
     private double frequenciaMinima = 0.5;
     private double confiancaMinima = 0.75;
+    private int numTransactions; 
+    private ArrayList<ArrayList<String>> sintomas;
+    private ArrayList<String> diagnosticos;
 
     public AlgoritmoApriori() {
+        sintomas = new ArrayList<ArrayList<String>>();
+       // diagnosticos = new Arrays.asList("1", "2", "3", "4"));
+
+        sintomas.add(new ArrayList<String>(Arrays.asList("Leite", "Pão", "Bolacha", "Suco")));
+        sintomas.add(new ArrayList<String>(Arrays.asList("Leite", "Pão", "Suco")));
+        sintomas.add(new ArrayList<String>(Arrays.asList("Leite", "Bolacha", "Suco")));
+        sintomas.add(new ArrayList<String>(Arrays.asList("Pão", "Bolacha", "Suco")));
+        
+        numTransactions = sintomas.size();
+        String resultado = this.realizarDiagnostico(sintomas, diagnosticos);
+        
     }
     
     //Primeira etapa:
@@ -45,7 +60,6 @@ public class AlgoritmoApriori {
 
     
     private String criarCandidato(ArrayList<ArrayList<String>> sintomas, String candidato ){
-        int tam = sintomas.size();
         int frequencia = 0;
         for (int i = 0; i < sintomas.size(); i++) {
                 ArrayList<String> sintomasPaciente = sintomas.get(i);
@@ -58,7 +72,7 @@ public class AlgoritmoApriori {
                 
         }
         
-        if(frequencia/tam >= frequenciaMinima){
+        if(frequencia/numTransactions >= frequenciaMinima){
             return candidato;
         }
         
@@ -83,84 +97,67 @@ public class AlgoritmoApriori {
         return candidatoExistente;
     }
     
-    
     //Terceira etapa
-    //Gerar candidato 
-    private ArrayList<ArrayList<String>> calculateFrequentItemsets(ArrayList<ArrayList<String>> transactions, double minSup, ArrayList<ArrayList<String>> candidates) {
-        ArrayList<ArrayList<String>> frequentCandidates = new ArrayList<ArrayList<String>>(); // Os candidatos frequentes para o itemset atual
-        int numTransactions = transactions.size(); // O número de transações
-        int numItems = transactions.get(0).size(); // O número de itens em cada transação
-        boolean match; // Se a transação possui todos os itens em um itemset
-        boolean[] trans = new boolean[numItems]; // Um array para representar uma transação e verificar se os itens estão presentes
-        int[] count = new int[candidates.size()]; // O número de correspondências bem-sucedidas
+    //Quarta etapa
+    private ArrayList<String> gerarGrupoDeCandidatos(ArrayList<String> tabelaCandidatos, ArrayList<ArrayList<String>> sintomas, ArrayList<String> itensFrequentes){
+        int tam = sintomas.size();
 
-        for (int i = 0; i < numTransactions; i++) {
-            ArrayList<String> transaction = transactions.get(i);
+        HashSet<String> candidatosUnicos = new HashSet<>(); // Usamos um HashSet para manter candidatos únicos
+        ArrayList<String> candidatos = new ArrayList<String>();
 
-            // Coloque o conteúdo da transação no array 'trans'
-            for (int j = 0; j < numItems; j++) {
-                trans[j] = transaction.equals(candidates.get(0).get(j)); // Verifique se o item está presente na transação
-            }
+        for(String candidatoX: tabelaCandidatos){
+            for(String candidatoY: tabelaCandidatos){
+                
+                if(!candidatoX.equals(candidatoY)){
+                    double frequencia = 0;
 
-            for (int c = 0; c < candidates.size(); c++) {
-                match = true; // Redefina a correspondência como verdadeira
-                ArrayList<String> cand = candidates.get(c);
+                    for (int i = 0; i < sintomas.size(); i++) {
+                        ArrayList<String> sintomasPaciente = sintomas.get(i);
+                        int cont = 0;
+                        for(String sintoma: sintomasPaciente){
 
-                // Verifique se cada item no itemset está presente na transação
-                for (String item : cand) {
-                    if (!trans[transaction.indexOf(item)]) { // Se o item não estiver presente na transação, defina a correspondência como falsa
-                        match = false;
-                        break;
+                            if(sintoma.equals(candidatoX) || sintoma.equals(candidatoY)){
+                                cont++;
+                            }
+
+                            if(cont == 2){
+                                frequencia += 1;
+                                break;
+                            }
+                        }
+                    }
+
+                    String candidatoCombination = candidatoX + ";" + candidatoY;
+                    // Verifica se já adicionou a combinação ou a combinação inversa
+                    if (!candidatosUnicos.contains(candidatoCombination) && !candidatosUnicos.contains(candidatoY+ ";" + candidatoX)) {
+                        if(frequencia/numTransactions >= frequenciaMinima){
+                            candidatosUnicos.add(candidatoCombination);  
+                        }
+                        
                     }
                 }
-
-                if (match) {
-                    count[c]++; // Se houver uma correspondência, aumente a contagem
-                }
             }
         }
 
-        for (int i = 0; i < candidates.size(); i++) {
-            // Se a porcentagem de suporte for maior ou igual ao minSup, adicione o candidato aos candidatos frequentes
-            if ((count[i] / (double) numTransactions) >= minSup) {
-                frequentCandidates.add(candidates.get(i));
-            }
-        }
-
-        // Limpe a lista de candidatos antigos
-        candidates.clear();
-        // Os novos candidatos são os candidatos frequentes antigos
-        candidates.addAll(frequentCandidates);
-        frequentCandidates.clear();
-        return candidates;
+        return candidatos;
     }
     
-    //Quarta etapa
-    private ArrayList<Candidato> gerarItensFrequentes(ArrayList<Candidato> tabelaCandidatos){
+    //Quinta etapa
+    private ArrayList<Candidato> calcularConbiabilidade(ArrayList<Candidato> tabelaCandidatos){
         return (ArrayList<Candidato>) tabelaCandidatos.stream().filter(x -> x.getFrequencia() >= this.frequenciaMinima);
     }
     
+
     
   public String realizarDiagnostico(ArrayList<ArrayList<String>> sintomas, ArrayList<String> diagnostico) {
         // 1  etapa e 2 etapa
         ArrayList<String> tabelaCandidatos = calculateFrequentItemsets(sintomas, diagnostico);
 
-        // 3 etapa
-        //ArrayList<ArrayList<String>> result = calculateFrequentItemsets(tabelaCandidatos);
-
-        // Faça as outras etapas do Apriori, se necessário
-
-        // Retorna algum resultado
         return "Teste";
     }
     
     public static void main(String[] args) {
-        // Exemplo de como usar a classe AlgoritmoApriori
-        AlgoritmoApriori apriori = new AlgoritmoApriori();
-        ArrayList<ArrayList<String>> sintomas = new ArrayList<ArrayList<String>>();
-        ArrayList<String> diagnostico = new ArrayList<String>();
-        String resultado = apriori.realizarDiagnostico(sintomas, diagnostico);
-        System.out.println(resultado);
+        
     }
     
 }
