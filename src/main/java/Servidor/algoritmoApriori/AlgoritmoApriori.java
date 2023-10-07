@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.Vector;
+import java.util.stream.Collectors;
 
 
 public class AlgoritmoApriori {
@@ -35,28 +36,34 @@ public class AlgoritmoApriori {
     //Gerar a Tabela de Candidatos com suas Frequências
     ///Segunda etapa:
     //Gerar tabela com itens frequentes
-    private ArrayList<String> calculateFrequentItemsets(ArrayList<ArrayList<String>> sintomas, ArrayList<String> diagnosticos) {
-        ArrayList<String> tabelaCandidatos = new ArrayList<String>();
+    private ArrayList<String> calculateFrequentItemsets(ArrayList<ArrayList<String>> transactions, ArrayList<String> diagnosticos) {
+        ArrayList<String> frequentItemsets1 = new ArrayList<String>();
+        int frequencia = 0;
+        
+        for (ArrayList<String> transaction : transactions) {
+            for (String item : transaction) {
+                ArrayList<String> exists = frequentItemsets1.stream()
+                    .filter(x -> x.equals(item))
+                    .collect(Collectors.toCollection(ArrayList::new));
 
-        for (int i = 0; i < sintomas.size(); i++) {
-            ArrayList<String> sintomasPaciente = sintomas.get(i);
-            
-            for(String sintoma: sintomasPaciente){
-                boolean candidatoExistente = this.candidatoIsInTabelaCandidatos(tabelaCandidatos, sintomas, sintoma);
-                     
-                // Verificar se um candidato com o mesmo nome já existe na tabelaCandidatos
-                if (!candidatoExistente) {
-                    String novoCandidato = criarCandidato(sintomas, sintoma); 
-                    
-                    //insere, se o candidato tiver a frequência >= 0.5
-                    if(!novoCandidato.isEmpty()) tabelaCandidatos.add(novoCandidato);
-                    
-                }    
+                if ( exists.isEmpty()) {
+                    frequentItemsets1.add(item);
+                }
             }
-
+         }
+        
+         for (String item : frequentItemsets1) {
+            System.out.print(item + " ");
         }
+       
+        
+        for (String item : frequentItemsets1) {
+            System.out.print(item + " ");
+        }
+ 
+        System.out.print(frequentItemsets1.size());
 
-        return tabelaCandidatos;
+        return frequentItemsets1;
     }
 
     public static List<Set<Integer>> generateKItemsets(List<Set<Integer>> frequentItemsets, int k) {
@@ -225,15 +232,7 @@ public class AlgoritmoApriori {
     }
     
      public static void main(String[] args) {
-        List<Set<Integer>> frequentItemsetsKMinus1 = new ArrayList<>(); // Replace with actual (k-1)-itemsets
-        int k = 3; // Change to the desired k
-
-        //responsavel pela terceira etapa
-        List<Set<Integer>> candidateItemsetsK = generateKItemsets(frequentItemsetsKMinus1, k);
-
-        System.out.println("Candidate " + k + "-itemsets:");
-        for (Set<Integer> itemset : candidateItemsetsK) {
-            System.out.println(itemset);
-        }
+      
+        AlgoritmoApriori n = new AlgoritmoApriori();
     }
 }
