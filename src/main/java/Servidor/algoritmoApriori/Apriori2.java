@@ -10,45 +10,70 @@ package Servidor.algoritmoApriori;
  * @author prisc
  */
 import java.util.*;
+import java.util.Map.Entry;
 public class Apriori2 {
     private static int nextSintomaId = 1;
     private static double confiancaMinima = 0.75;
     private static Map<String, Integer> sintomaToIntegerMap = new HashMap<>();
     private static List<Set<String>> transactions;
 
-    public static void main(String[] args) {
-        transactions = new ArrayList<>();  // Substitua pelo seu conjunto de transações
-
+        public static void main(String[] args) {
         // Defina suas transações
+        List<Set<String>> transactions = new ArrayList<>();
         transactions.add(new HashSet<>(Arrays.asList("Leite", "Pão", "Bolacha", "Suco")));
         transactions.add(new HashSet<>(Arrays.asList("Leite", "Pão", "Suco")));
         transactions.add(new HashSet<>(Arrays.asList("Leite", "Bolacha", "Suco")));
         transactions.add(new HashSet<>(Arrays.asList("Pão", "Bolacha", "Suco")));
 
         double minSupport = 0.5; // Defina o suporte mínimo desejado
+        double confiancaMinima = 0.75; // Defina a confiança mínima desejada
 
         // 1: Encontrar conjuntos de itens frequentes de tamanho 1 (itens frequentes individuais)
         List<Set<String>> frequentItemsets1 = findFrequent1Itemsets(transactions, minSupport);
 
+        System.out.println("Frequent Itemsets of Size 1:");
+        printFrequentItemsets(frequentItemsets1);
+
         int k = 2; // Comece com conjuntos de 2 itens
         List<Set<String>> candidateItemsets = new ArrayList<>(frequentItemsets1);
-        List<Set<String>> frequentItemsetsK = null;
-        
+        //List<Set<String>> frequentItemsetsK = null;
+
         while (!candidateItemsets.isEmpty()) {
-            frequentItemsetsK = findFrequentKItemsets(transactions, candidateItemsets, minSupport);
+             List<Set<String>> frequentItemsetsK = findFrequentKItemsets(transactions, candidateItemsets, minSupport);
 
             // Agora você pode usar a lista frequentItemsetsK que contém todos os conjuntos frequentes de tamanho k
 
+            System.out.println("Frequent Itemsets of Size " + k + ":");
+            printFrequentItemsets(frequentItemsetsK);
+
             candidateItemsets = generateCandidateItemsets(frequentItemsetsK, k);
+            
             k++;
         }
-
-        if(frequentItemsetsK != null){
+        
+        if (frequentItemsetsK != null) {
             // 3: Calcular o suporte (frequência) de cada conjunto de itens frequente
-            Map<Set<String>, Integer> itemsetSupport = calculateSupport(frequentItemsetsK, transactions);
+            
+            Map<Set<String>, Integer> itemsetSupport = calculateSupport(frequentItemsetsK, transactions, minSupport);
+
+            System.out.println("Itemset Support:" + itemsetSupport.size());
+            printItemsetSupport(itemsetSupport);
 
             // 4: Gerar regras de associação a partir dos conjuntos frequentes encontrados nas etapas anteriores
+            System.out.println("Association Rules:");
             generateAssociationRules(frequentItemsetsK, itemsetSupport, confiancaMinima);
+        }
+    }
+
+    private static void printFrequentItemsets(List<Set<String>> itemsets) {
+        for (Set<String> itemset : itemsets) {
+            System.out.println(itemset);
+        }
+    }
+
+    private static void printItemsetSupport(Map<Set<String>, Integer> itemsetSupport) {
+        for (Entry<Set<String>, Integer> entry : itemsetSupport.entrySet()) {
+            System.out.println(entry.getKey() + " - Support: " + entry.getValue());
         }
     }
 
@@ -179,10 +204,10 @@ public class Apriori2 {
     }
     
     
-   private static Map<Set<String>, Integer> calculateSupport(List<Set<String>> frequentItemsetsK, List<Set<String>> transactions) {
+   private static Map<Set<String>, Integer> calculateSupport(List<Set<String>> candidateItemsets, List<Set<String>> transactions, double minSupport) {
         Map<Set<String>, Integer> itemsetSupport = new HashMap<>();
 
-        for (Set<String> itemset : frequentItemsetsK) {
+        for (Set<String> itemset : candidateItemsets) {
             int support = 0;
 
             for (Set<String> transaction : transactions) {
@@ -191,10 +216,14 @@ public class Apriori2 {
                 }
             }
 
-            itemsetSupport.put(itemset, support);
+            if (support >= minSupport * transactions.size()) {
+                itemsetSupport.put(itemset, support);
+            }
         }
 
         return itemsetSupport;
     }
+
+
 
 }
