@@ -278,7 +278,13 @@ public class Apriori extends Observable{
                 }
 
         }
-
+        
+        int cont = 0;
+        for(boolean bol: trans){
+            log("Cont: " + cont + " ispresent" + bol);
+            cont++;
+        }
+        
         for (int i = 0; i < itemsets.size(); i++) {
                 // if the count% is larger than the minSup%, add to the candidate to
                 // the frequent candidates

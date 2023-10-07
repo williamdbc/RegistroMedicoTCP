@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.Vector;
 
 
@@ -56,6 +57,73 @@ public class AlgoritmoApriori {
         }
 
         return tabelaCandidatos;
+    }
+
+    public static List<Set<Integer>> generateKItemsets(List<Set<Integer>> frequentItemsets, int k) {
+        List<Set<Integer>> candidateItemsets = new ArrayList<>();
+
+        // Combine frequent (k-1)-itemsets to generate candidate k-itemsets
+        for (int i = 0; i < frequentItemsets.size(); i++) {
+            for (int j = i + 1; j < frequentItemsets.size(); j++) {
+                Set<Integer> itemset1 = frequentItemsets.get(i);
+                Set<Integer> itemset2 = frequentItemsets.get(j);
+
+                // Check if the first (k-1) items of the two itemsets are the same
+                List<Integer> itemList1 = new ArrayList<>(itemset1);
+                List<Integer> itemList2 = new ArrayList<>(itemset2);
+
+                if (itemList1.subList(0, k - 2).equals(itemList2.subList(0, k - 2))) {
+                    Set<Integer> newCandidate = new HashSet<>(itemset1);
+                    newCandidate.addAll(itemset2);
+
+                    // Check if all (k-1)-itemsets of the candidate are frequent
+                    if (isAllSubsetsFrequent(frequentItemsets, newCandidate, k - 1)) {
+                        candidateItemsets.add(newCandidate);
+                    }
+                }
+            }
+        }
+
+        return candidateItemsets;
+    }
+
+    private static boolean isAllSubsetsFrequent(List<Set<Integer>> frequentItemsets, Set<Integer> candidate, int k) {
+        List<Set<Integer>> subsets = generateSubsets(candidate, k);
+
+        for (Set<Integer> subset : subsets) {
+            if (!frequentItemsets.contains(subset)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private static List<Set<Integer>> generateSubsets(Set<Integer> itemset, int k) {
+        List<Set<Integer>> subsets = new ArrayList<>();
+        Integer[] itemArray = itemset.toArray(new Integer[0]);
+        int n = itemArray.length;
+
+        generateSubsetsRecursive(subsets, itemArray, new HashSet<>(), 0, n, k);
+
+        return subsets;
+    }
+
+    private static void generateSubsetsRecursive(List<Set<Integer>> subsets, Integer[] itemArray, Set<Integer> currentSubset, int index, int n, int k) {
+        if (currentSubset.size() == k) {
+            subsets.add(new HashSet<>(currentSubset));
+            return;
+        }
+
+        if (index == n) {
+            return;
+        }
+
+        currentSubset.add(itemArray[index]);
+        generateSubsetsRecursive(subsets, itemArray, currentSubset, index + 1, n, k);
+
+        currentSubset.remove(itemArray[index]);
+        generateSubsetsRecursive(subsets, itemArray, currentSubset, index + 1, n, k);
     }
 
     
@@ -156,8 +224,16 @@ public class AlgoritmoApriori {
         return "Teste";
     }
     
-    public static void main(String[] args) {
-        
+     public static void main(String[] args) {
+        List<Set<Integer>> frequentItemsetsKMinus1 = new ArrayList<>(); // Replace with actual (k-1)-itemsets
+        int k = 3; // Change to the desired k
+
+        //responsavel pela terceira etapa
+        List<Set<Integer>> candidateItemsetsK = generateKItemsets(frequentItemsetsKMinus1, k);
+
+        System.out.println("Candidate " + k + "-itemsets:");
+        for (Set<Integer> itemset : candidateItemsetsK) {
+            System.out.println(itemset);
+        }
     }
-    
 }
