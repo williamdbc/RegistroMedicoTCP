@@ -233,20 +233,14 @@ public class Apriori extends Observable{
 
 
     /** put "true" in trans[i] if the integer i is in line */
-   private void line2booleanArray(ArrayList<String> line, boolean[] trans) {
+    private void line2booleanArray(ArrayList<String> line, boolean[] trans) {
         Arrays.fill(trans, false);
 
-        for (String item : line) {
-            // Aqui, não estamos tentando analisar 'item' como um número inteiro
-            // Em vez disso, vamos verificar se ele existe na lista
-            for (int i = 0; i < trans.length; i++) {
-                if (item.equals(Integer.toString(i))) {
-                    trans[i] = true;
-                }
-            }
+        for(String item: line){
+            int parsedVal = line.indexOf(item);
+            trans[parsedVal]=true; 
         }
     }
-
 
     /** passes through the data to measure the frequency of sets in {@link itemsets},
      *  then filters thoses who are under the minimum support (minSup)
@@ -254,7 +248,7 @@ public class Apriori extends Observable{
     private void calculateFrequentItemsets() throws Exception
     {
     	
-        log("Passing through the data to compute the frequency of " + itemsets.size()+ " itemsets of size "+itemsets.get(0).length);
+        log("Passing through the data to compute the frequency of " + itemsets.size()+ " itemsets of size "+ itemsets.get(0).length);
 
         List<int[]> frequentCandidates = new ArrayList<int[]>(); //the frequent candidates for the current itemset
 
