@@ -59,8 +59,46 @@ public class AlgoritmoApriori {
 
             // 4: Gerar regras de associação a partir dos conjuntos frequentes encontrados nas etapas anteriores
             System.out.println("Association Rules:");
-            generateAssociationRules(frequentItemsetsK, itemsetSupport, confiancaMinima);
+            calculateConfidences(frequentItemsetsK, transactions);
         }
+    }
+    
+    
+    public static void calculateConfidences(List<Set<String>> frequentItemSets, List<Set<String>> transactions) {
+    for (Set<String> itemSet : frequentItemSets) {
+        int frequency = calculateFrequency(itemSet, transactions);
+        String itemSetString = String.join(" ", itemSet); // Converte o conjunto de itens em uma string
+        for (String item : itemSet) {
+            Set<String> itemSetWithoutItem = new HashSet<>(itemSet);
+            itemSetWithoutItem.remove(item);
+
+            double supportItemSet = calculateSupport(itemSet, transactions);
+            double supportItemSetWithoutItem = calculateSupport(itemSetWithoutItem, transactions);
+            double confidence = supportItemSet / supportItemSetWithoutItem;
+            System.out.println("Item Set: " + itemSetString + ", Confidence: " + confidence + ", Frequency: " + frequency);
+        }
+    }
+    }
+
+
+    public static double calculateSupport(Set<String> itemSet, List<Set<String>> transactions) {
+        int count = 0;
+        for (Set<String> transaction : transactions) {
+            if (transaction.containsAll(itemSet)) {
+                count++;
+            }
+        }
+        return (double) count / transactions.size();
+    }
+    
+     public static int calculateFrequency(Set<String> itemSet, List<Set<String>> transactions) {
+        int count = 0;
+        for (Set<String> transaction : transactions) {
+            if (transaction.containsAll(itemSet)) {
+                count++;
+            }
+        }
+        return count;
     }
     
     public static String realizarDiagnostico( ArrayList<ArrayList<String>> sintomas, ArrayList<String> diagnosticos){
@@ -186,8 +224,9 @@ public class AlgoritmoApriori {
         remaining.add(element);
     }
 
-    private static void generateAssociationRules(List<Set<String>> frequentItemsets, Map<Set<String>, Integer> itemsetSupport, double minConfidence) {
-        for (Set<String> itemset : frequentItemsets) {
+    private static void generateAssociationRules(List<Set<String>> frequentItemsets, Map<Set<String>, Integer> itemsetSupport, double minConfidence,
+    List<Set<String>> frequentItemsetsKMinus1) {
+        for (Set<String> itemset : frequentItemsetsKMinus1) {
             Set<Set<String>> itemSubsets = generateSubsets(itemset);
 
             for (Set<String> subset : itemSubsets) {
@@ -201,6 +240,9 @@ public class AlgoritmoApriori {
                 }
             }
         }
+        
+        
+
     }
 
    private static double calculateConfidence(Set<String> antecedent, Set<String> consequent, Map<Set<String>, Integer> itemsetSupport) {
