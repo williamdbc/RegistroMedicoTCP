@@ -13,72 +13,51 @@ import java.util.*;
 import java.util.Map.Entry;
 public class AlgoritmoApriori {
     private static int nextSintomaId = 1;
-    private static double confiancaMinima = 0.75;
     private static Map<String, Integer> sintomaToIntegerMap = new HashMap<>();
     private static List<Set<String>> transactions;
+    private static double minSupport = 0.5;
+    private static double confiancaMinima = 0.75; 
 
     public static void main(String[] args) {
         // Defina suas transações
         List<Set<String>> transactions = new ArrayList<>();
-        transactions.add(new HashSet<>(Arrays.asList("Leite", "Pão", "Bolacha", "Suco")));
+        /**transactions.add(new HashSet<>(Arrays.asList("Leite", "Pão", "Bolacha", "Suco")));
+        transactions.add(new HashSet<>(Arrays.asList("Leite", "Suco")));
+        transactions.add(new HashSet<>(Arrays.asList("Leite", "Ovos")));
+        transactions.add(new HashSet<>(Arrays.asList("Pão", "Bolacha", "Café"))); */
+        
+        transactions.add(new HashSet<>(Arrays.asList("Gripe", "", "Bolacha", "Suco"))); 
         transactions.add(new HashSet<>(Arrays.asList("Leite", "Suco")));
         transactions.add(new HashSet<>(Arrays.asList("Leite", "Ovos")));
         transactions.add(new HashSet<>(Arrays.asList("Pão", "Bolacha", "Café")));
-
-        double minSupport = 0.5; // Defina o suporte mínimo desejado
-        double confiancaMinima = 0.75; // Defina a confiança mínima desejada
-
-        // 1: Encontrar conjuntos de itens frequentes de tamanho 1 (itens frequentes individuais)
-        List<Set<String>> frequentItemsets1 = findFrequent1Itemsets(transactions, minSupport);
-
-        System.out.println("Frequent Itemsets of Size 1:");
-        printFrequentItemsets(frequentItemsets1);
-
-        int k = 2; // Comece com conjuntos de 2 itens
-        List<Set<String>> candidateItemsets = new ArrayList<>(frequentItemsets1);
-        
-        List<Set<String>> frequentItemsetsK = null;
-        while (!candidateItemsets.isEmpty()) {
-            frequentItemsetsK = findFrequentKItemsets(transactions, candidateItemsets, minSupport);
-
-            // Agora você pode usar a lista frequentItemsetsK que contém todos os conjuntos frequentes de tamanho k
-            System.out.println("Frequent Itemsets of Size " + k + ":");
-            printFrequentItemsets(frequentItemsetsK);
-
-            candidateItemsets = generateCandidateItemsets(frequentItemsetsK, k);
-            k++;
-        }
-        
-        
-        if (frequentItemsetsK != null) {
-            // 3: Calcular o suporte (frequência) de cada conjunto de itens frequente
-            Map<Set<String>, Integer> itemsetSupport = calculateSupport(frequentItemsetsK, transactions, minSupport);
-
-            System.out.println("Itemset Support:" + itemsetSupport.size());
-            printItemsetSupport(itemsetSupport, transactions.size());
-
-            // 4: Gerar regras de associação a partir dos conjuntos frequentes encontrados nas etapas anteriores
-            System.out.println("Association Rules:");
-            calculateConfidences(frequentItemsetsK, transactions);
-        }
+        realizarDiagnostico(transactions, null);
     }
     
-    
+
     public static void calculateConfidences(List<Set<String>> frequentItemSets, List<Set<String>> transactions) {
-    for (Set<String> itemSet : frequentItemSets) {
-        int frequency = calculateFrequency(itemSet, transactions);
-        String itemSetString = String.join(" ", itemSet); // Converte o conjunto de itens em uma string
-        for (String item : itemSet) {
-            Set<String> itemSetWithoutItem = new HashSet<>(itemSet);
-            itemSetWithoutItem.remove(item);
+        for (Set<String> itemSet : frequentItemSets) {
+            int frequency = calculateFrequency(itemSet, transactions);
+            String itemSetString = String.join(" ", itemSet); // Converte o conjunto de itens em uma string
+            System.out.println("Item Set: " + itemSetString + ", Frequency: " + ((double) frequency / transactions.size()) * 100 + "%");
 
-            double supportItemSet = calculateSupport(itemSet, transactions);
-            double supportItemSetWithoutItem = calculateSupport(itemSetWithoutItem, transactions);
-            double confidence = supportItemSet / supportItemSetWithoutItem;
-            System.out.println("Item Set: " + itemSetString + ", Confidence: " + confidence + ", Frequency: " + frequency);
+            List<String> itemsList = new ArrayList<>(itemSet);
+
+            // Calcular combinações de itens
+            for (int i = 0; i < itemsList.size(); i++) {
+                String item = itemsList.get(i);
+                Set<String> itemSetWithoutItem = new HashSet<>(itemSet);
+                itemSetWithoutItem.remove(item);
+
+                double supportItemSet = calculateSupport(itemSet, transactions);
+                double supportItemSetWithoutItem = calculateSupport(itemSetWithoutItem, transactions);
+                double confidence = supportItemSet / supportItemSetWithoutItem;
+
+                System.out.println("  Combinação: " + item + " => " + String.join(" ", itemSetWithoutItem) +
+                        " Confidence: " + confidence + ", Frequency: " + ((double) frequency / transactions.size()) * 100 + "%");
+            }
         }
     }
-    }
+
 
 
     public static double calculateSupport(Set<String> itemSet, List<Set<String>> transactions) {
@@ -101,7 +80,42 @@ public class AlgoritmoApriori {
         return count;
     }
     
-    public static String realizarDiagnostico( ArrayList<ArrayList<String>> sintomas, ArrayList<String> diagnosticos){
+    public static String realizarDiagnostico(List<Set<String>> sintomas, Set<String> diagnosticos){
+        transactions = sintomas;
+        // 1: Encontrar conjuntos de itens frequentes de tamanho 1 (itens frequentes individuais)
+        List<Set<String>> frequentItemsets1 = findFrequent1Itemsets(transactions, minSupport);
+
+        System.out.println("Frequent Itemsets of Size 1:");
+        printFrequentItemsets(frequentItemsets1);
+
+        int k = 2; // Comece com conjuntos de 2 itens
+        List<Set<String>> candidateItemsets = new ArrayList<>(frequentItemsets1);
+        
+        List<Set<String>> frequentItemsetsK = null;
+        while (!candidateItemsets.isEmpty()) {
+            frequentItemsetsK = findFrequentKItemsets(transactions, candidateItemsets, minSupport);
+
+            // Agora você pode usar a lista frequentItemsetsK que contém todos os conjuntos frequentes de tamanho k
+            System.out.println("Frequent Itemsets of Size " + k + ":");
+            printFrequentItemsets(frequentItemsetsK);
+
+            candidateItemsets = generateCandidateItemsets(frequentItemsetsK, k);
+            k++;
+        }
+        
+        if (frequentItemsetsK != null) {
+            // 3: Calcular o suporte (frequência) de cada conjunto de itens frequente
+            Map<Set<String>, Integer> itemsetSupport = calculateSupport(frequentItemsetsK, transactions, minSupport);
+
+            System.out.println("Itemset Support:" + itemsetSupport.size());
+            printItemsetSupport(itemsetSupport, transactions.size());
+
+            // 4: Gerar regras de associação a partir dos conjuntos frequentes encontrados nas etapas anteriores
+            System.out.println("Association Rules:");
+            List<Set<String>> testes = new ArrayList<>();
+    
+            calculateConfidences(frequentItemsetsK, transactions);
+        }
         return "teste";
     }
     
@@ -241,8 +255,6 @@ public class AlgoritmoApriori {
             }
         }
         
-        
-
     }
 
    private static double calculateConfidence(Set<String> antecedent, Set<String> consequent, Map<Set<String>, Integer> itemsetSupport) {
@@ -280,6 +292,10 @@ public class AlgoritmoApriori {
 
         return itemsetSupport;
     }
-
+  
+  
+  private static String efetuarDiagnosticoAutomatico(){
+      
+  }
 
 }
