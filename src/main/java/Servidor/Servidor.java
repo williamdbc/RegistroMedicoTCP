@@ -50,7 +50,7 @@ public class Servidor extends Thread{
                 resposta = database.retornarCasos();
                 break;
             case SOLICITAR_DIAGNOSTICO:
-                resposta = database.diagnosticoAutomatico();
+                resposta = database.diagnosticoAutomatico(solicitacaoRecebida.getSintomas());
                 break;
         }
         

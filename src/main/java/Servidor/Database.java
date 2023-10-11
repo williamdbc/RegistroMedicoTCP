@@ -1,6 +1,7 @@
 package Servidor;
 
 import Servidor.algoritmoApriori.AlgoritmoApriori;
+import Servidor.algoritmoApriori.Apriori;
 import java.util.ArrayList;
 
 public class Database {
@@ -17,8 +18,8 @@ public class Database {
         return "Consulta inserida no banco de dados.";
     }
     
-    public String diagnosticoAutomatico(){
-        return new AlgoritmoApriori().realizarDiagnostico(listaSintomas, listaDiagnosticos);
+    public String diagnosticoAutomatico(ArrayList<String> sintomasRelatados){
+        return new Apriori().realizarDiagnostico(listaSintomas, listaDiagnosticos, sintomasRelatados);
     }
     
     public String retornarCasos(){
