@@ -1,7 +1,5 @@
 package Servidor;
 
-import Servidor.algoritmoApriori.AlgoritmoApriori;
-import Servidor.algoritmoApriori.Apriori;
 import java.util.ArrayList;
 
 public class Database {
@@ -15,6 +13,11 @@ public class Database {
     public String armazenarConsulta(ArrayList<String> sintomas, String diagnostico){
         listaSintomas.add(sintomas);
         listaDiagnosticos.add(diagnostico);
+        
+        System.out.println("Sintomas inseridos: " + sintomas);
+        System.out.println("Diagnostico inserido: " + diagnostico);
+        System.out.println("");
+        
         return "Consulta inserida no banco de dados.";
     }
     

@@ -1,9 +1,9 @@
 Cliente\ClienteTest.class
 Cliente\ClienteMain$6.class
+Servidor\Apriori.class
 Cliente\ClienteMain$5.class
 Cliente\Cliente.class
 Cliente\ClienteMain$1.class
-Servidor\algoritmoApriori\Candidato.class
 Servicos\Solicitacao.class
 Cliente\ClienteMain$4.class
 Servidor\Database.class
@@ -16,4 +16,4 @@ Cliente\ClienteMain$3.class
 Enum\Requisicao.class
 Cliente\ClienteMain$7.class
 Cliente\ClienteMain$2.class
-Servidor\algoritmoApriori\AlgoritmoApriori.class
+Tests\RetornarCasosTest.class
