@@ -41,6 +41,7 @@ public class ClienteMain extends javax.swing.JFrame {
         perdaApetite = new javax.swing.JCheckBox();
         enjoo = new javax.swing.JCheckBox();
         chiadoPeito = new javax.swing.JCheckBox();
+        limparBtn = new javax.swing.JToggleButton();
 
         jRadioButton1.setText("jRadioButton1");
 
@@ -119,10 +120,22 @@ public class ClienteMain extends javax.swing.JFrame {
 
         chiadoPeito.setText("Chiado no peito ");
 
+        limparBtn.setBackground(new java.awt.Color(51, 255, 51));
+        limparBtn.setText("Limpar");
+        limparBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                limparBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(308, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(354, 354, 354))
             .addGroup(layout.createSequentialGroup()
                 .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -130,48 +143,43 @@ public class ClienteMain extends javax.swing.JFrame {
                     .addComponent(jLabel2))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(efetuarDigAutoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(enviarCasosArmButton)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtDiagnostico, javax.swing.GroupLayout.PREFERRED_SIZE, 607, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(diarreia)
-                                .addGap(18, 18, 18)
-                                .addComponent(doresMusculares)
-                                .addGap(18, 18, 18)
-                                .addComponent(dorCabeca)
-                                .addGap(18, 18, 18)
-                                .addComponent(dificuldadeRespirar)
-                                .addGap(26, 26, 26)
-                                .addComponent(fadiga))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(vomitos)
-                                .addGap(18, 18, 18)
-                                .addComponent(febre)
-                                .addGap(18, 18, 18)
-                                .addComponent(tosses)
-                                .addGap(18, 18, 18)
-                                .addComponent(fraqueza)
-                                .addGap(18, 18, 18)
-                                .addComponent(perdaApetite)
-                                .addGap(18, 18, 18)
-                                .addComponent(enjoo)
-                                .addGap(18, 18, 18)
-                                .addComponent(chiadoPeito)))
-                        .addContainerGap(17, Short.MAX_VALUE))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(354, 354, 354))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(enviarButton, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(326, 326, 326))))
+                        .addComponent(diarreia)
+                        .addGap(18, 18, 18)
+                        .addComponent(doresMusculares)
+                        .addGap(18, 18, 18)
+                        .addComponent(dorCabeca)
+                        .addGap(18, 18, 18)
+                        .addComponent(dificuldadeRespirar)
+                        .addGap(26, 26, 26)
+                        .addComponent(fadiga))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(vomitos)
+                        .addGap(18, 18, 18)
+                        .addComponent(febre)
+                        .addGap(18, 18, 18)
+                        .addComponent(tosses)
+                        .addGap(18, 18, 18)
+                        .addComponent(fraqueza)
+                        .addGap(18, 18, 18)
+                        .addComponent(perdaApetite)
+                        .addGap(18, 18, 18)
+                        .addComponent(enjoo)
+                        .addGap(18, 18, 18)
+                        .addComponent(chiadoPeito))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(enviarButton, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(121, 121, 121)
+                            .addComponent(limparBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtDiagnostico, javax.swing.GroupLayout.PREFERRED_SIZE, 607, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(135, 135, 135)
+                        .addComponent(efetuarDigAutoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(175, 175, 175)
+                        .addComponent(enviarCasosArmButton)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -199,13 +207,15 @@ public class ClienteMain extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtDiagnostico, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
-                .addGap(28, 28, 28)
-                .addComponent(enviarButton)
-                .addGap(30, 30, 30)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(enviarCasosArmButton)
-                    .addComponent(efetuarDigAutoButton))
-                .addGap(49, 49, 49))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(limparBtn)
+                    .addComponent(enviarButton))
+                .addGap(18, 18, 18)
+                .addComponent(efetuarDigAutoButton)
+                .addGap(18, 18, 18)
+                .addComponent(enviarCasosArmButton)
+                .addGap(30, 30, 30))
         );
 
         pack();
@@ -215,6 +225,28 @@ public class ClienteMain extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtDiagnosticoActionPerformed
 
+    private boolean nenhumSintomaSelecionado(){ 
+        JCheckBox[] listaSintomas = new JCheckBox[]{
+                diarreia, doresMusculares, dorCabeca, dificuldadeRespirar, fadiga, 
+                vomitos, febre, tosses, fraqueza, perdaApetite, enjoo, chiadoPeito};
+        
+        for(JCheckBox sintoma : listaSintomas){
+            if(sintoma.isSelected()){
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
+    private boolean diagnosticoVazio(){
+        if(txtDiagnostico.getText().isEmpty()){
+            return true;
+        }
+        return false;
+    }
+    
+    
     private void sintomasSelecionados(ArrayList<String> sintomasPaciente){
         JCheckBox[] listaSintomas = new JCheckBox[]{
                     diarreia, doresMusculares, dorCabeca, dificuldadeRespirar, fadiga, 
@@ -228,6 +260,16 @@ public class ClienteMain extends javax.swing.JFrame {
     }
     
     private void enviarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enviarButtonActionPerformed
+        if(nenhumSintomaSelecionado()){
+            JOptionPane.showMessageDialog(this, "Você deve selecionar pelo menos um sintoma.", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        if(diagnosticoVazio()){
+            JOptionPane.showMessageDialog(this, "O diagnóstico não pode estar vazio.", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
         ArrayList<String> sintomasPaciente = new ArrayList<>();
         String diagnostico = txtDiagnostico.getText();
         
@@ -259,6 +301,11 @@ public class ClienteMain extends javax.swing.JFrame {
     }//GEN-LAST:event_enviarCasosArmButtonActionPerformed
 
     private void efetuarDigAutoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_efetuarDigAutoButtonActionPerformed
+        if(nenhumSintomaSelecionado()){
+            JOptionPane.showMessageDialog(this, "Você deve selecionar pelo menos um sintoma.", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
         ArrayList<String> sintomasPaciente = new ArrayList<>();
         String diagnostico = txtDiagnostico.getText();
         
@@ -281,6 +328,18 @@ public class ClienteMain extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_dorCabecaActionPerformed
 
+    private void limparBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_limparBtnActionPerformed
+       JCheckBox[] listaSintomas = new JCheckBox[]{
+                    diarreia, doresMusculares, dorCabeca, dificuldadeRespirar, fadiga, 
+                    vomitos, febre, tosses, fraqueza, perdaApetite, enjoo, chiadoPeito};
+        
+        for(JCheckBox sintoma : listaSintomas){
+            sintoma.setSelected(false);
+        }
+        
+        txtDiagnostico.setText("");
+    }//GEN-LAST:event_limparBtnActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -292,7 +351,7 @@ public class ClienteMain extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
@@ -336,6 +395,7 @@ public class ClienteMain extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JRadioButton jRadioButton1;
+    private javax.swing.JToggleButton limparBtn;
     private javax.swing.JCheckBox perdaApetite;
     private javax.swing.JCheckBox tosses;
     private javax.swing.JTextField txtDiagnostico;
