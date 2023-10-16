@@ -28,29 +28,11 @@ public class Database {
     public String retornarCasos(){
         String casos = "";
         
-        ArrayList<String> nomeSintomas = new ArrayList<>();
-        
-        for(ArrayList<String> sintomasPaciente : listaSintomas){
-            for(String sintoma : sintomasPaciente){
-                if(!nomeSintomas.contains(sintoma)){
-                    nomeSintomas.add(sintoma);
-                }
-            }
+        for(int i = 0; i < listaSintomas.size();  i++){
+            casos = casos + "Sintomas: " + listaSintomas.get(i) + "\n";
+            casos = casos + "Diagnóstico: " + listaDiagnosticos.get(i) + "\n\n";
         }
         
-        ArrayList<String> diagnosticosDoSintoma = new ArrayList<>();
-        
-        for(String sintoma : nomeSintomas){
-            diagnosticosDoSintoma.clear();
-            for(int i = 0 ; i < listaSintomas.size() ; i++){
-                if(listaSintomas.get(i).contains(sintoma)){
-                    diagnosticosDoSintoma.add(listaDiagnosticos.get(i));
-                }
-            }
-            casos = casos + sintoma + "\n" + diagnosticosDoSintoma + "\n\n";
-        }
-        
-     
         return casos;
     }
     
