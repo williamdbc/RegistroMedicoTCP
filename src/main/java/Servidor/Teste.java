@@ -18,13 +18,11 @@ public class Teste {
     
     public static List<List<String>> getSintomasWithDiagnostico(ArrayList<ArrayList<String>> sintomas, ArrayList<String> diagnosticos) {
         List<List<String>> sintomasComDiagnostico = copyArrayListToNestedList(sintomas);
-     
+        int cont = 0;
         
         for(String diag: diagnosticos){
-            for (List<String> itens : sintomasComDiagnostico) {
-                itens.add("Doenca" + diag);
-
-            }
+            sintomasComDiagnostico.get(cont).add("Doenca" + diag);
+            cont++;
         }
         
         return sintomasComDiagnostico;
@@ -53,8 +51,8 @@ public class Teste {
         // Verifique se há alguma regra de associação que atenda à confiança mínima
         if (maxConfidence > 0.0) {
             // Imprima a regra com maior confiança
-            System.out.println(maxSymptom + " -> " + maxDisease + " [Confidence: " + maxConfidence + "]");
-             return maxDisease;
+            System.out.println(maxSymptom + " -> " + maxDisease.substring("Doenca".length()) + " [Confidence: " + maxConfidence + "]");
+            return maxDisease.substring("Doenca".length());
         }
         
         System.out.println("Nenhum diagnóstico encontrado");
@@ -63,7 +61,7 @@ public class Teste {
     
     public static void printTransactions(List<List<String>> transactions) {
         for (int i = 0; i < transactions.size(); i++) {
-            System.out.println("Paciente " + i + ": " + transactions.get(i));
+            System.out.println("" + i + ": " + transactions.get(i));
         }
     }
 
