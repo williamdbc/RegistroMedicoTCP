@@ -1,5 +1,6 @@
 package Servidor;
 
+import Tests.AprioriTeste;
 import java.util.ArrayList;
 
 public class Database {
@@ -22,7 +23,7 @@ public class Database {
     }
     
     public String diagnosticoAutomatico(ArrayList<String> sintomasRelatados){
-        return new Apriori().realizarDiagnostico(listaSintomas, listaDiagnosticos, sintomasRelatados);
+        return new AprioriTeste().realizarDiagnostico(listaSintomas, listaDiagnosticos, sintomasRelatados);
     }
     
     public String retornarCasos(){
