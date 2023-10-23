@@ -14,6 +14,7 @@ public class Apriori {
         return novaLista;
     }
     
+    //obtem os sintomas concatenados com os diagnosticos
     public static List<List<String>> getSintomasComDiagnostico(ArrayList<ArrayList<String>> sintomas, ArrayList<String> diagnosticos) {
         List<List<String>> sintomasComDiagnostico = copiarArray(sintomas);
         int cont = 0;
@@ -63,23 +64,6 @@ public class Apriori {
         }
     }
 
-    
-//    public static void main(String[] args) {
-//        // Dados de exemplo (conjunto de transações)
-//        ArrayList<ArrayList<String>> transacoes = new ArrayList<>();
-//        transacoes.add(new ArrayList<>(List.of("S1", "S2")));
-//        transacoes.add(new ArrayList<>(List.of("S1", "S2", "S5")));
-//        transacoes.add(new ArrayList<>(List.of("S1", "S3")));
-//        transacoes.add(new ArrayList<>(List.of("S1", "S2", "S3")));
-//        transacoes.add(new ArrayList<>(List.of("S1", "S3", "S4")));
-//
-//
-//        // Sintomas de interesse
-//        ArrayList<String> sintomasDeInteresse = new ArrayList<>(List.of("S1",  "S3"));
-//        ArrayList<String> diagnosticos = new ArrayList<>(List.of("D1", "D2", "D3"));
-//        realizarDiagnostico(transacoes, diagnosticos , sintomasDeInteresse);  
-//    }
-
     // Função para obter doenças associadas a um sintoma
     public static List<String> getDoencasAssociadas(String sintoma, List<List<String>> transacoes) {
         List<String> doencasAssociadas = new ArrayList<>();
@@ -95,7 +79,9 @@ public class Apriori {
         return doencasAssociadas;
     }
 
-    // Função para calcular a confiança de uma regra (sintoma -> doença)
+    //Esta função calcula a confiança de uma regra (sintoma -> regra com base nas transações.
+    //Calcula o suporte (quantas vezes o sintoma  e a doença aparecem juntos) e divide pelo suporte do sintoma.  
+    //Isso fornece uma medida de quão confiável é a associação entre o sintoma e a doença.
     public static double calcularConfianca(String sintoma, String doenca, List<List<String>> transacoes) {
         int suporteX = 0;
         int suporteXeY = 0;
